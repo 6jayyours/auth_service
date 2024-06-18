@@ -12,8 +12,8 @@ jobs:
 
     steps:
       - name: pull docker image
-        run:  docker pull marjunr/recruiter_authservice
+        run:  docker pull marjunr/recruiter-authservice
       - name: delete old docker image
         run:  docker rm -f auth-service || true
       - name: run docker container
-        run:  docker run -d -p 8082:8082 --name auth-service --network recruiter-backend_rec-net  marjunr/recruiter_authservice
+        run:  docker run -d -p 8082:8082 --name auth-service --network recruiter marjunr/recruiter-authservice
