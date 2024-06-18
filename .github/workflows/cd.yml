@@ -1,0 +1,19 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: [ "CI Pipeline" ]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: pull docker image
+        run:  docker pull marjunr/recruiter-authservice
+      - name: delete old docker image
+        run:  docker rm -f auth-service || true
+      - name: run docker container
+        run:  docker run -d -p 8082:8082 --name auth-service --network recruiter-net marjunr/recruiter-authservice
