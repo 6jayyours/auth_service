@@ -16,4 +16,4 @@ jobs:
       - name: delete old docker image
         run:  docker rm -f auth-service || true
       - name: run docker container
-        run:  Docker run -d -p 8082:8082 --name auth-service --network rec-net marjunr/recruiter_authservice
+        run:  docker run -d -p 8082:8082 --name auth-service --network rec-net marjunr/recruiter_authservice
