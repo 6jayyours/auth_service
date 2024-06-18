@@ -35,7 +35,7 @@ jobs:
         context: .
         file: Dockerfile
         push: true
-        tags: marjunr/recruiter_authservice:latest
+        tags: marjunr/recruiter-authservice:latest
         build-args: |
           MYSQL_HOST=${{ secrets.MYSQL_HOST }}
           MYSQL_PORT=${{ secrets.MYSQL_PORT }}
