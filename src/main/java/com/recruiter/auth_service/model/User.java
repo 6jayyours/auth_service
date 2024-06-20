@@ -37,6 +37,9 @@ public class User implements UserDetails {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "subscription")
+    private boolean subscription;
+
     @Column(name = "otp")
     private String otp;
 
