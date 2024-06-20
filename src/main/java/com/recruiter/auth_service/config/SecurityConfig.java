@@ -34,10 +34,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-                                .requestMatchers("/","/resources/**", "/static/**", "/DocImages/**","/ProfilePictures/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/actuator/refresh").permitAll()
+                        req ->req.requestMatchers("/*/**")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
