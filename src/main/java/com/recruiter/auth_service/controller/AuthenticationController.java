@@ -5,8 +5,10 @@ import com.recruiter.auth_service.model.request.RegisterRequest;
 import com.recruiter.auth_service.model.response.AuthenticationResponse;
 import com.recruiter.auth_service.model.response.RegisterResponse;
 import com.recruiter.auth_service.service.AuthenticationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -49,6 +51,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(verificationResult);
     }
 
-
+    @PostMapping("/verifyDoc")
+    public ResponseEntity<String> verifyDoc(@RequestParam("file") MultipartFile file, @RequestParam("email") String email) {
+        return ResponseEntity.ok(authenticationService.verifyDoc(file, email));
+    }
 
 }

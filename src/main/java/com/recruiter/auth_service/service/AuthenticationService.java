@@ -14,8 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Paths;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -23,12 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AuthenticationService {
-
-    //upload directory paths
-    public static String uploadDir1 = System.getProperty("user.dir") + "/src/main/resources/static/DocImages";
-    public String uploadDir2 = Paths.get("src", "main", "resources", "static", "DocImages").toString();
-
-
     // OTP expiry time in seconds
     private static final long OTP_EXPIRY_SECONDS = 30;
     private final Map<String, LocalDateTime> otpMap = new ConcurrentHashMap<>();
@@ -36,14 +31,17 @@ public class AuthenticationService {
 
     // dependencies
     private final UserRepository userRepository;
+
+    private final StorageService storageService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final JavaMailSender javaMailSender;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(JavaMailSender javaMailSender,UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(JavaMailSender javaMailSender, UserRepository repository, StorageService storageService, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.javaMailSender = javaMailSender;
         this.userRepository = repository;
+        this.storageService = storageService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -200,6 +198,23 @@ public class AuthenticationService {
             // Log the exception and handle it accordingly
             System.err.println("Error while verifying OTP: " + e.getMessage());
             return "An error occurred while verifying OTP.";
+        }
+    }
+
+    public String verifyDoc(MultipartFile file, String email) {
+        try {
+            if (file.isEmpty()) {
+                return "No file was uploaded.";
+            }
+            String url = storageService.uploadVerificationDoc(file);
+            User user = userRepository.findByEmail(email);
+            user.setIdImageUrl(url);
+            userRepository.save(user);
+
+            return "File uploaded successfully";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to upload image";
         }
     }
 }

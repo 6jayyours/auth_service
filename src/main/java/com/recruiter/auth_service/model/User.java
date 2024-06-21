@@ -43,6 +43,9 @@ public class User implements UserDetails {
     @Column(name = "otp")
     private String otp;
 
+    @Column(name = "idImageUrl")
+    private String idImageUrl;
+
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
