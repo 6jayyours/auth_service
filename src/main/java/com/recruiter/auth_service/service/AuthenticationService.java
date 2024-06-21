@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -68,7 +69,7 @@ public class AuthenticationService {
             user.setUsername(request.getUsername());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setEmail(request.getEmail());
-            user.setStatus(true);
+            user.setStatus(false);
             user.setRole(request.getRole());
             user.setRegistrationDate(LocalDateTime.now());
 
@@ -100,7 +101,6 @@ public class AuthenticationService {
                             request.getPassword()
                     )
             );
-
             // Fetch user details
             User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
@@ -108,7 +108,6 @@ public class AuthenticationService {
                 // User is blocked or inactive
                 return new AuthenticationResponse(null, null, "User is blocked", null);
             }
-
             // Generate JWT token
             String jwtToken = jwtService.generateToken(user);
             return new AuthenticationResponse(user.getId(), jwtToken, "User logged in successfully", user.getRole());
@@ -145,6 +144,62 @@ public class AuthenticationService {
             // email sending failure
             e.printStackTrace();
             System.out.println("Failed to send OTP email to: " + to);
+        }
+    }
+
+    public void resendOTP(String email) {
+        try {
+            // Fetch the user by email from the repository
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                // Generate a new OTP
+                String newOTP = generateOTP();
+                // Set the new OTP to the user object
+                user.setOtp(newOTP);
+                // Save the updated user object in the repository
+                userRepository.save(user);
+                // Send the OTP via email
+                sendOTPEmail(user.getEmail(), newOTP);
+                // Store the OTP generation time in the otpMap
+                otpMap.put(newOTP, LocalDateTime.now());
+            } else {
+                // Handle case where user is not found
+                throw new Exception("User not found.");
+            }
+        } catch (Exception e) {
+            // Log the exception and handle it accordingly
+            System.err.println("Error while resending OTP: " + e.getMessage());
+        }
+    }
+
+    public String verifyOTP(String email, String otp) {
+        try {
+            // Fetch the user by email from the repository
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                // Retrieve the stored OTP for the user
+                String storedOtp = user.getOtp();
+                if (storedOtp != null && storedOtp.trim().equals(otp.trim())) {
+                    // Get the OTP creation time from the otpMap
+                    LocalDateTime otpCreationTime = otpMap.get(otp);
+                    if (otpCreationTime != null && LocalDateTime.now().isBefore(otpCreationTime.plus(OTP_EXPIRY_SECONDS, ChronoUnit.SECONDS))) {
+                        // OTP is valid and not expired
+                        user.setStatus(true);
+                        userRepository.save(user);
+                        return "OTP verified successfully.";
+                    } else {
+                        return "OTP has expired.";
+                    }
+                } else {
+                    return "Invalid OTP.";
+                }
+            } else {
+                return "User not found.";
+            }
+        } catch (Exception e) {
+            // Log the exception and handle it accordingly
+            System.err.println("Error while verifying OTP: " + e.getMessage());
+            return "An error occurred while verifying OTP.";
         }
     }
 }

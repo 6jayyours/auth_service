@@ -8,6 +8,8 @@ import com.recruiter.auth_service.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(origins = "*")
@@ -30,6 +32,21 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @PostMapping("/resendOTP")
+    public ResponseEntity<String> resendOTP(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        authenticationService.resendOTP(email);
+        return ResponseEntity.ok("OTP resent successfully");
+    }
+
+    @PostMapping("/verifyOtp")
+    public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String otp = requestBody.get("otp");
+        String verificationResult = authenticationService.verifyOTP(email, otp);
+        return ResponseEntity.ok(verificationResult);
     }
 
 
