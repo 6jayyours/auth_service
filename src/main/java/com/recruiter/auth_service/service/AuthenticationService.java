@@ -68,6 +68,7 @@ public class AuthenticationService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setEmail(request.getEmail());
             user.setStatus(false);
+            user.setSubscription(false);
             user.setRole(request.getRole());
             user.setRegistrationDate(LocalDateTime.now());
 

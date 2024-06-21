@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private boolean status;
 
     @Column(name = "subscription")
-    private boolean subscription;
+    private Boolean subscription;
 
     @Column(name = "otp")
     private String otp;
