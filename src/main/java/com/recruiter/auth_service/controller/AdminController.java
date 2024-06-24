@@ -24,6 +24,7 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role) {
         List<User> users = userDetailsService.getUsersByRole(role);
+        System.out.println();
         return ResponseEntity.ok(users);
     }
 }
