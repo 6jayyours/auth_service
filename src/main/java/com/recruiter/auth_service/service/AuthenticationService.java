@@ -218,4 +218,35 @@ public class AuthenticationService {
             return "Failed to upload image";
         }
     }
+
+    public String addPicture(MultipartFile file, Integer id) {
+        try {
+            if (file.isEmpty()) {
+                return "No file was uploaded.";
+            }
+            String url = storageService.uploadVerificationDoc(file);
+            User user = userRepository.findById(id).orElseThrow();
+            user.setProfileImageUrl(url);
+            userRepository.save(user);
+
+            return "File uploaded successfully";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to upload image";
+        }
+    }
+
+    public String getProfileImage(Integer id) {
+        try {
+            // Fetch user from repository
+            User user = userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
+
+            // Return profile image URL
+            return user.getProfileImageUrl();
+        } catch (Exception e) {
+            // Log the exception and handle it accordingly
+            e.printStackTrace();
+            return "Failed to retrieve profile image";
+        }
+    }
 }

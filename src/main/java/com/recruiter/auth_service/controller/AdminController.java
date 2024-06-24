@@ -2,12 +2,11 @@ package com.recruiter.auth_service.controller;
 
 import com.recruiter.auth_service.model.Role;
 import com.recruiter.auth_service.model.User;
+import com.recruiter.auth_service.service.AuthenticationService;
 import com.recruiter.auth_service.service.UserDetailsServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,9 +15,11 @@ import java.util.List;
 public class AdminController {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final AuthenticationService authenticationService;
 
-    public AdminController(UserDetailsServiceImpl userDetailsService) {
+    public AdminController(UserDetailsServiceImpl userDetailsService, AuthenticationService authenticationService) {
         this.userDetailsService = userDetailsService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/users")
@@ -27,4 +28,5 @@ public class AdminController {
         System.out.println();
         return ResponseEntity.ok(users);
     }
+
 }

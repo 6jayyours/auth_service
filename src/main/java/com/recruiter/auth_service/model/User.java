@@ -52,6 +52,15 @@ public class User implements UserDetails {
     @Column(name = "registrationDate")
     private LocalDateTime registrationDate;
 
+    @Column(name = "profileImageUrl")
+    private String profileImageUrl;
+
+    @Column(name = "mobile")
+    private String mobile;
+
+    @Column(name = "gender")
+    private String gender;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
