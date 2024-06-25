@@ -56,14 +56,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.verifyDoc(file, email));
     }
 
-    @PostMapping("/profilePicture")
-    public ResponseEntity<String> profilePicture(@RequestParam("file") MultipartFile file, @RequestParam("id") Integer id) {
-        return ResponseEntity.ok(authenticationService.addPicture(file, id));
-    }
 
-    @GetMapping("/getProfileImage")
-    public ResponseEntity<String> getImage(@RequestParam Integer id) {
-        return ResponseEntity.ok(authenticationService.getProfileImage(id));
-    }
 
 }
