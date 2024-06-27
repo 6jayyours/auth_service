@@ -12,20 +12,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class AdminController {
+public class UserController {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationService authenticationService;
 
-    public AdminController(UserDetailsServiceImpl userDetailsService, AuthenticationService authenticationService) {
+    public UserController(UserDetailsServiceImpl userDetailsService, AuthenticationService authenticationService) {
         this.userDetailsService = userDetailsService;
         this.authenticationService = authenticationService;
+    }
+
+    @GetMapping("/candidate")
+    public ResponseEntity<User> getUser(@RequestParam Integer id) {
+        User user = userDetailsService.getUsersById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role) {
         List<User> users = userDetailsService.getUsersByRole(role);
-        System.out.println();
         return ResponseEntity.ok(users);
     }
 

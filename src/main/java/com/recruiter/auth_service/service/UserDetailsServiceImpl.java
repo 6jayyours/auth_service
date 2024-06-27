@@ -38,4 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<User> getUsersByRole(Role role) {
         return userRepository.findByRole(role);
     }
+
+    public User getUsersById(Integer id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return user;
+    }
 }
