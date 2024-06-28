@@ -44,5 +44,8 @@ public class UserController {
         return ResponseEntity.ok(authenticationService.getProfileImage(id));
     }
 
-
+    @PutMapping("/activate/{id}")
+    public ResponseEntity<String> activateUser(@PathVariable Integer id){
+        return ResponseEntity.ok(userDetailsService.updateUserStatus(id));
+    }
 }

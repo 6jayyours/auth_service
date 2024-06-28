@@ -43,4 +43,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow();
         return user;
     }
+
+    public String updateUserStatus(Integer id) {
+        try {
+            User user = userRepository.findById(id).orElseThrow();
+            user.setStatus(!user.isStatus());
+            userRepository.save(user);
+            return "User status updated successfully.";
+        } catch (Exception e) {
+            return "An error occurred while updating the user status.";
+        }
+    }
 }
