@@ -105,18 +105,18 @@ public class AuthenticationService {
 
             if (!user.isStatus()) {
                 // User is blocked or inactive
-                return new AuthenticationResponse(null, null, "User is blocked", null);
+                return new AuthenticationResponse(null, null, "User is blocked", null,null,null);
             }
             // Generate JWT token
             String jwtToken = jwtService.generateToken(user);
-            return new AuthenticationResponse(user.getId(), jwtToken, "User logged in successfully", user.getRole());
+            return new AuthenticationResponse(user.getId(), jwtToken, "User logged in successfully", user.getRole(),user.getEmail(),user.getSubscription());
         } catch (AuthenticationException e) {
             // authentication failure
-            return new AuthenticationResponse(null, null, "Invalid username or password", null);
+            return new AuthenticationResponse(null, null, "Invalid username or password", null,null,null);
         } catch (Exception e) {
             // unexpected exceptions
             e.printStackTrace();
-            return new AuthenticationResponse(null, null, "Authentication failed. Please try again.", null);
+            return new AuthenticationResponse(null, null, "Authentication failed. Please try again.", null,null,null);
         }
     }
 

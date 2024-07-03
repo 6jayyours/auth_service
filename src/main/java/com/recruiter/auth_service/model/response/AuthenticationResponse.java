@@ -11,5 +11,7 @@ public class AuthenticationResponse {
     private String token;
     private String message;
     private Role role;
+    private String email;
+    private Boolean subscription;
 
 }
