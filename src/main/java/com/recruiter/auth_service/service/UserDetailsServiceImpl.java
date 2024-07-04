@@ -54,4 +54,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return "An error occurred while updating the user status.";
         }
     }
+
+    public String updateUser(Integer id, User user) {
+        try {
+            User existingUser = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setGender(user.getGender());
+            existingUser.setMobile(user.getMobile());
+            // Set other fields as needed
+            userRepository.save(existingUser);
+            return "user edited successfully";
+        } catch (Exception e) {
+            // Handle specific exceptions or rethrow if necessary
+            throw new RuntimeException("Failed to update user with id " + id, e);
+        }
+    }
 }

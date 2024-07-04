@@ -35,6 +35,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role) {
         List<User> users = userDetailsService.getUsersByRole(role);
@@ -91,4 +93,11 @@ public class UserController {
         List<Skills> skills = skillsService.getUserSkills(userId);
         return ResponseEntity.ok(skills);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(@RequestParam Integer id, @RequestBody User user) {
+        String result = userDetailsService.updateUser(id, user);
+        return ResponseEntity.ok(result);
+    }
+
 }
