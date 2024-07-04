@@ -100,4 +100,10 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/byIds/{userIds}")
+    public ResponseEntity<List<User>> findUsersByUserIds(@PathVariable List<Integer> userIds) {
+        List<User> users = userDetailsService.findUsersByUserIds(userIds);
+        return ResponseEntity.ok(users);
+    }
+
 }

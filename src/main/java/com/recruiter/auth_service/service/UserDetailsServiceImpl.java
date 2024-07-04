@@ -73,4 +73,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new RuntimeException("Failed to update user with id " + id, e);
         }
     }
+
+    public List<User> findUsersByUserIds(List<Integer> userIds) {
+        return userRepository.findByUserIds(userIds);
+    }
 }
