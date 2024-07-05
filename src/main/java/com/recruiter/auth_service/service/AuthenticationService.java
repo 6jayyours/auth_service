@@ -103,9 +103,9 @@ public class AuthenticationService {
             // Fetch user details
             User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
-            if (!user.isStatus()) {
+            if (!user.isStatus()  ) {
                 // User is blocked or inactive
-                return new AuthenticationResponse(null, null, "User is blocked", null,null,null);
+                return new AuthenticationResponse(null, null, "User is Blocked" + user.getBlockReason(), null,null,null);
             }
             // Generate JWT token
             String jwtToken = jwtService.generateToken(user);
