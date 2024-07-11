@@ -44,10 +44,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return user;
     }
 
-    public String updateUserStatus(Integer id) {
+    public String updateUserStatus(Integer id, String reason) {
         try {
             User user = userRepository.findById(id).orElseThrow();
             user.setStatus(!user.isStatus());
+            user.setBlockReason(reason);
             userRepository.save(user);
             return "User status updated successfully.";
         } catch (Exception e) {

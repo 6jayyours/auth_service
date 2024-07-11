@@ -58,8 +58,8 @@ public class UserController {
     }
 
     @PutMapping("/activate/{id}")
-    public ResponseEntity<String> activateUser(@PathVariable Integer id){
-        return ResponseEntity.ok(userDetailsService.updateUserStatus(id));
+    public ResponseEntity<String> activateUser(@PathVariable Integer id, @RequestParam String reason){
+        return ResponseEntity.ok(userDetailsService.updateUserStatus(id,reason));
     }
 
     @PostMapping("/addExperience")

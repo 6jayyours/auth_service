@@ -105,7 +105,7 @@ public class AuthenticationService {
 
             if (!user.isStatus()  ) {
                 // User is blocked or inactive
-                return new AuthenticationResponse(null, null, "User is Blocked" + user.getBlockReason(), null,null,null);
+                return new AuthenticationResponse(null, null, "User is Blocked" + " " + "[" + " " + user.getBlockReason() + " " + "]", null,null,null);
             }
             // Generate JWT token
             String jwtToken = jwtService.generateToken(user);
