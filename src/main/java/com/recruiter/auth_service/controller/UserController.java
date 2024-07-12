@@ -43,6 +43,7 @@ public class UserController {
 
 
 
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role) {
         List<User> users = userDetailsService.getUsersByRole(role);
