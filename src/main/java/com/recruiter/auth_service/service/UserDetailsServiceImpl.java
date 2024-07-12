@@ -1,6 +1,7 @@
 package com.recruiter.auth_service.service;
 
 
+import com.recruiter.auth_service.feign.JobsClient;
 import com.recruiter.auth_service.model.Role;
 import com.recruiter.auth_service.model.User;
 import com.recruiter.auth_service.repository.UserRepository;
@@ -16,8 +17,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private  final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    private final JobsClient jobsClient;
+
+
+    public UserDetailsServiceImpl(UserRepository userRepository, JobsClient jobsClient) {
         this.userRepository = userRepository;
+        this.jobsClient = jobsClient;
+
     }
 
     @Override
@@ -50,6 +56,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user.setStatus(!user.isStatus());
             user.setBlockReason(reason);
             userRepository.save(user);
+            if(user.getRole()==Role.RECRUITER) {
+                jobsClient.blockJob(id);
+            }
             return "User status updated successfully.";
         } catch (Exception e) {
             return "An error occurred while updating the user status.";
@@ -78,4 +87,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<User> findUsersByUserIds(List<Integer> userIds) {
         return userRepository.findByUserIds(userIds);
     }
+
+
+
 }

@@ -1,5 +1,7 @@
 package com.recruiter.auth_service.controller;
 
+import com.recruiter.auth_service.feign.JobsClient;
+import com.recruiter.auth_service.model.ChangePasswordRequest;
 import com.recruiter.auth_service.model.Role;
 import com.recruiter.auth_service.model.User;
 import com.recruiter.auth_service.model.resume.*;
@@ -8,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,9 +23,10 @@ public class UserController {
     private final ExperienceService experienceService;
     private final SkillsService skillsService;
 
+
     private final StorageService storageService;
 
-    public UserController(UserDetailsServiceImpl userDetailsService, AuthenticationService authenticationService, EducationService educationService, ExperienceService experienceService, SkillsService skillsService, StorageService storageService) {
+    public UserController(UserDetailsServiceImpl userDetailsService, AuthenticationService authenticationService, EducationService educationService, ExperienceService experienceService, SkillsService skillsService,  StorageService storageService) {
         this.userDetailsService = userDetailsService;
         this.authenticationService = authenticationService;
         this.educationService = educationService;
@@ -109,6 +111,8 @@ public class UserController {
         List<User> users = userDetailsService.findUsersByUserIds(userIds);
         return ResponseEntity.ok(users);
     }
+
+
 
 
 

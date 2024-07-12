@@ -1,5 +1,6 @@
 package com.recruiter.auth_service.controller;
 
+import com.recruiter.auth_service.model.ChangePasswordRequest;
 import com.recruiter.auth_service.model.request.AuthenticationRequest;
 import com.recruiter.auth_service.model.request.RegisterRequest;
 import com.recruiter.auth_service.model.response.AuthenticationResponse;
@@ -54,6 +55,12 @@ public class AuthenticationController {
     @PostMapping("/verifyDoc")
     public ResponseEntity<String> verifyDoc(@RequestParam("file") MultipartFile file, @RequestParam("email") String email) {
         return ResponseEntity.ok(authenticationService.verifyDoc(file, email));
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        String result = authenticationService.changePassword(request.getId(), request.getOldPassword(), request.getNewPassword());
+        return ResponseEntity.ok(result);
     }
 
 

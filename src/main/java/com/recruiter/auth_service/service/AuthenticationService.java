@@ -249,4 +249,22 @@ public class AuthenticationService {
             return "Failed to retrieve profile image";
         }
     }
+
+    public String changePassword(Integer id, String oldPassword, String newPassword) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                throw new RuntimeException("Old password is incorrect");
+            }
+
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+
+            return "Password updated successfully";
+        }  catch (Exception e) {
+            return "An unexpected error occurred";
+        }
+    }
 }
