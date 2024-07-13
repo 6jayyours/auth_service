@@ -77,6 +77,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             existingUser.setEmail(user.getEmail());
             existingUser.setGender(user.getGender());
             existingUser.setMobile(user.getMobile());
+            existingUser.setLocation(user.getLocation());
+            existingUser.setPosition(user.getPosition());
             // Set other fields as needed
             userRepository.save(existingUser);
             return "user edited successfully";
