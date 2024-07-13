@@ -64,6 +64,12 @@ public class User implements UserDetails {
     @Column(name = "blockReason")
     private String blockReason;
 
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "position")
+    private String position;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
