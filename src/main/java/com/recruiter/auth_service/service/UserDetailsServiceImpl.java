@@ -70,7 +70,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public String updateUser(Integer id, User user) {
         try {
             User existingUser = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+                    .orElseThrow(() -> new RuntimeException("User not found with id. " + id));
             existingUser.setFirstName(user.getFirstName());
             existingUser.setLastName(user.getLastName());
             existingUser.setUsername(user.getUsername());
